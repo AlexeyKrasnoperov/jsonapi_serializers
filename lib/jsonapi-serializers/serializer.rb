@@ -345,7 +345,7 @@ module JSONAPI
 
         # Given all the primary objects (either the single root object or collection of objects),
         # recursively search and find related associations that were specified as includes.
-        objects = options[:is_collection] ? objects.to_a : [objects]
+        objects = Array(objects)
         objects.compact.each do |obj|
           # Use the mutability of relationship_data as the return datastructure to take advantage
           # of the internal special merging logic.
@@ -488,7 +488,7 @@ module JSONAPI
 
         # Full linkage: a request for comments.author MUST automatically include comments
         # in the response.
-        objects = is_collection ? object : [object]
+        objects = Array(object)
         if child_inclusion_tree[:_include] == true
           # Include the current level objects if the _include attribute exists.
           # If it is not set, that indicates that this is an inner path and not a leaf and will
