@@ -220,6 +220,25 @@ module MyApp
     # Add only :tag, inherit the rest.
     attribute :tag
   end
+
+  class FancyAuthorSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    attribute :fancy_name do
+      "Fancy #{object.name}"
+    end
+  end
+
+  class FancyPostSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    # TODO: do the same with an has_many
+    has_one :author, serializer: MyApp::FancyAuthorSerializer
+  end
 end
 
 # Test the `jsonapi_serializer_class_name` override method for serializers in different namespaces.

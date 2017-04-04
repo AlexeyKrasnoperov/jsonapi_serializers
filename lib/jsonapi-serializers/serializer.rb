@@ -234,12 +234,18 @@ module JSONAPI
     end
 
     def self.find_serializer_class_name(object, options)
+      if options[:serializer]
+        return options[:serializer].to_s
+      end
+
       if options[:namespace]
         return "#{options[:namespace]}::#{object.class.name}Serializer"
       end
+
       if object.respond_to?(:jsonapi_serializer_class_name)
         return object.jsonapi_serializer_class_name.to_s
       end
+
       "#{object.class.name}Serializer"
     end
 
@@ -357,7 +363,8 @@ module JSONAPI
           included_passthrough_options[:base_url] = passthrough_options[:base_url]
           included_passthrough_options[:context] = passthrough_options[:context]
           included_passthrough_options[:fields] = passthrough_options[:fields]
-          included_passthrough_options[:serializer] = find_serializer_class(data[:object], options)
+
+          included_passthrough_options[:serializer] = find_serializer_class(data[:object], data[:options])
           included_passthrough_options[:namespace] = passthrough_options[:namespace]
           included_passthrough_options[:include_linkages] = data[:include_linkages]
           serialize_primary(data[:object], included_passthrough_options)
@@ -520,7 +527,7 @@ module JSONAPI
             # so merge the include_linkages each time we see it to load all the relevant linkages.
             current_child_includes += results[key] && results[key][:include_linkages] || []
             current_child_includes.uniq!
-            results[key] = {object: obj, include_linkages: current_child_includes}
+            results[key] = {object: obj, include_linkages: current_child_includes, options: attr_data[:options]}
           end
         end
 

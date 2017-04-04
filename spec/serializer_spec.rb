@@ -1223,5 +1223,29 @@ describe JSONAPI::Serializer do
       expect(actual_data['included']).to eq(expected_data['included'])
       expect(actual_data).to eq(expected_data)
     end
+
+    it 'supports customization of associations on the configuration level' do
+      user = create(:user)
+      post = create(:post, author: user)
+      long_comments = create_list(:long_comment, 2, user: user, post: post)
+
+      expected_data = {
+        'data' => serialize_primary(post, {
+            serializer: MyApp::FancyPostSerializer,
+            include_linkages: ['author']
+          }),
+        'included' => [
+          serialize_primary(post.author, {serializer: MyApp::FancyAuthorSerializer})
+        ],
+      }
+
+      includes = ['author']
+
+      actual_data = JSONAPI::Serializer.serialize(post, include: includes, serializer: MyApp::FancyPostSerializer)
+
+      # Multiple expectations for better diff output for debugging.
+      expect(actual_data['data']).to eq(expected_data['data'])
+      expect(actual_data['included']).to eq(expected_data['included'])
+    end
   end
 end
