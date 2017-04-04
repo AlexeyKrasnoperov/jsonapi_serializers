@@ -698,7 +698,7 @@ describe JSONAPI::Serializer do
     end
     it 'errors if include is not a defined attribute' do
       user = create(:user)
-      expect { JSONAPI::Serializer.serialize(user, include: ['fake-attr']) }.to raise_error
+      expect { JSONAPI::Serializer.serialize(user, include: ['fake-attr']) }.to raise_error(JSONAPI::Serializer::InvalidIncludeError)
     end
     it 'handles recursive loading of relationships' do
       user = create(:user)
