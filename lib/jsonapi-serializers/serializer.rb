@@ -127,7 +127,7 @@ module JSONAPI
               # http://jsonapi.org/format/#document-structure-resource-relationships
               data[formatted_attribute_name]['data'] = nil
             else
-              related_object_serializer = JSONAPI::Serializer.find_serializer(object, @options)
+              related_object_serializer = JSONAPI::Serializer.find_serializer(object, attr_data[:options])
               data[formatted_attribute_name]['data'] = {
                 'type' => related_object_serializer.type.to_s,
                 'id' => related_object_serializer.id.to_s,
@@ -158,7 +158,7 @@ module JSONAPI
             data[formatted_attribute_name]['data'] = []
             objects = has_many_relationship(attribute_name, attr_data) || []
             objects.each do |obj|
-              related_object_serializer = JSONAPI::Serializer.find_serializer(obj, @options)
+              related_object_serializer = JSONAPI::Serializer.find_serializer(obj, attr_data[:options])
               data[formatted_attribute_name]['data'] << {
                 'type' => related_object_serializer.type.to_s,
                 'id' => related_object_serializer.id.to_s,
@@ -494,7 +494,7 @@ module JSONAPI
           # If it is not set, that indicates that this is an inner path and not a leaf and will
           # be followed by the recursion below.
           objects.each do |obj|
-            obj_serializer = JSONAPI::Serializer.find_serializer(obj, options)
+            obj_serializer = JSONAPI::Serializer.find_serializer(obj, attr_data[:options])
             # Use keys of ['posts', '1'] for the results to enforce uniqueness.
             # Spec: A compound document MUST NOT include more than one resource object for each
             # type and id pair.
