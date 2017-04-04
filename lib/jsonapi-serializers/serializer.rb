@@ -1,3 +1,4 @@
+require 'pry'
 require 'set'
 require 'active_support/inflector'
 
@@ -234,12 +235,18 @@ module JSONAPI
     end
 
     def self.find_serializer_class_name(object, options)
+      if options[:serializer]
+        return options[:serializer].to_s
+      end
+
       if options[:namespace]
         return "#{options[:namespace]}::#{object.class.name}Serializer"
       end
+
       if object.respond_to?(:jsonapi_serializer_class_name)
         return object.jsonapi_serializer_class_name.to_s
       end
+
       "#{object.class.name}Serializer"
     end
 
@@ -273,19 +280,7 @@ module JSONAPI
       includes = options[:include]
       includes = (includes.is_a?(String) ? includes.split(',') : includes).uniq if includes
 
-      # Transforms input so that the comma-separated fields are separate symbols in array
-      # and keys are stringified
-      # Example:
-      # {posts: 'title,author,long_comments'} => {'posts' => [:title, :author, :long_comments]}
-      # {posts: ['title', 'author', 'long_comments'} => {'posts' => [:title, :author, :long_comments]}
-      #
-      fields = {}
-      # Normalize fields to accept a comma-separated string or an array of strings.
-      options[:fields].map do |type, whitelisted_fields|
-        whitelisted_fields = [whitelisted_fields] if whitelisted_fields.is_a?(Symbol)
-        whitelisted_fields = whitelisted_fields.split(',') if whitelisted_fields.is_a?(String)
-        fields[type.to_s] = whitelisted_fields.map(&:to_sym)
-      end
+      fields = normalize_option_fields(options[:fields])
 
       # An internal-only structure that is passed through serializers as they are created.
       passthrough_options = {
@@ -345,7 +340,7 @@ module JSONAPI
 
         # Given all the primary objects (either the single root object or collection of objects),
         # recursively search and find related associations that were specified as includes.
-        objects = options[:is_collection] ? objects.to_a : [objects]
+        objects = Array(objects)
         objects.compact.each do |obj|
           # Use the mutability of relationship_data as the return datastructure to take advantage
           # of the internal special merging logic.
@@ -364,6 +359,26 @@ module JSONAPI
         end
       end
       result
+    end
+
+
+    # Transforms input so that the comma-separated fields are separate symbols in array
+    # and keys are stringified
+    # Example:
+    # {posts: 'title,author,long_comments'} => {'posts' => [:title, :author, :long_comments]}
+    # {posts: ['title', 'author', 'long_comments'} => {'posts' => [:title, :author, :long_comments]}
+    #
+    def self.normalize_option_fields(optoin_fields)
+      fields = {}
+
+      # Normalize fields to accept a comma-separated string or an array of strings.
+      optoin_fields.map do |type, whitelisted_fields|
+        whitelisted_fields = [whitelisted_fields] if whitelisted_fields.is_a?(Symbol)
+        whitelisted_fields = whitelisted_fields.split(',') if whitelisted_fields.is_a?(String)
+        fields[type.to_s] = whitelisted_fields.map(&:to_sym)
+      end
+
+      fields
     end
 
     def self.serialize_errors(raw_errors)
@@ -488,13 +503,14 @@ module JSONAPI
 
         # Full linkage: a request for comments.author MUST automatically include comments
         # in the response.
-        objects = is_collection ? object : [object]
+        objects = Array(object)
+
         if child_inclusion_tree[:_include] == true
           # Include the current level objects if the _include attribute exists.
           # If it is not set, that indicates that this is an inner path and not a leaf and will
           # be followed by the recursion below.
           objects.each do |obj|
-            obj_serializer = JSONAPI::Serializer.find_serializer(obj, options)
+            obj_serializer = JSONAPI::Serializer.find_serializer(obj, attr_data[:options])
             # Use keys of ['posts', '1'] for the results to enforce uniqueness.
             # Spec: A compound document MUST NOT include more than one resource object for each
             # type and id pair.

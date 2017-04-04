@@ -165,7 +165,6 @@ module MyApp
     end
   end
 
-
   class PostSerializerWithoutLinks
     include JSONAPI::Serializer
 
@@ -219,6 +218,23 @@ module MyApp
   class PostSerializerWithInheritedProperties < PostSerializer
     # Add only :tag, inherit the rest.
     attribute :tag
+  end
+
+  class FancyAuthorSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+    attribute :fancy_name do
+      "Fancy #{object.name}"
+    end
+  end
+
+  class FancyPostSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+    has_one :author, serializer: MyApp::FancyAuthorSerializer
+    # TODO: same with an has_many
   end
 end
 
