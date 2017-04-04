@@ -276,7 +276,7 @@ module Api
         has_one :user
 
         # Circular-reference back to post.
-        has_one :post
+        has_one :post, namespace: 'Api::V1'
       end
     end
   end
