@@ -236,8 +236,18 @@ module MyApp
 
     attribute :id
 
-    # TODO: do the same with an has_many
     has_one :author, serializer: MyApp::FancyAuthorSerializer
+    has_many :long_comments, serializer: 'MyApp::FancyLongCommentSerializer'
+  end
+
+  class FancyLongCommentSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    attribute :fancy_body do
+      "Fancy #{object.body}"
+    end
   end
 end
 

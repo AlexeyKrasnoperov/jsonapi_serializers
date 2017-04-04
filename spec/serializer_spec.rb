@@ -1227,19 +1227,22 @@ describe JSONAPI::Serializer do
     it 'supports customization of associations on the configuration level' do
       user = create(:user)
       post = create(:post, author: user)
-      long_comments = create_list(:long_comment, 2, user: user, post: post)
+      long_comments = create_list(:long_comment, 2, user: user)
+      post.long_comments = long_comments
 
       expected_data = {
         'data' => serialize_primary(post, {
             serializer: MyApp::FancyPostSerializer,
-            include_linkages: ['author']
+            include_linkages: ['author', 'long-comments']
           }),
         'included' => [
-          serialize_primary(post.author, {serializer: MyApp::FancyAuthorSerializer})
+          serialize_primary(post.author, {serializer: MyApp::FancyAuthorSerializer}),
+          serialize_primary(post.long_comments.first, { serializer: MyApp::FancyLongCommentSerializer }),
+          serialize_primary(post.long_comments.last, { serializer: MyApp::FancyLongCommentSerializer }),
         ],
       }
 
-      includes = ['author']
+      includes = ['author', 'long-comments']
 
       actual_data = JSONAPI::Serializer.serialize(post, include: includes, serializer: MyApp::FancyPostSerializer)
 
