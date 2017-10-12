@@ -230,7 +230,7 @@ module JSONAPI
     end
 
     def self.find_serializer_class_name(object, options)
-      return options[:serializer].to_s if options[:serializer]
+      # return options[:serializer].to_s if options[:serializer]
 
       if options[:namespace]
         return "#{options[:namespace]}::#{object.class.name}Serializer"
@@ -240,7 +240,7 @@ module JSONAPI
         return object.jsonapi_serializer_class_name.to_s
       end
 
-      "#{object.class.name}Serializer"
+      "#{object.class.name.split('::').last}Serializer"
     end
 
     def self.find_serializer_class(object, options)
