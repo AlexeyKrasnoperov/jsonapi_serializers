@@ -130,7 +130,7 @@ module JSONAPI
               related_object_serializer = JSONAPI::Serializer.find_serializer(object, attr_data[:options])
               data[formatted_attribute_name]['data'] = {
                 'type' => related_object_serializer.type.to_s,
-                'id' => related_object_serializer.id.to_s,
+                'id' => related_object_serializer.id.to_s
               }
             end
           end
@@ -161,7 +161,7 @@ module JSONAPI
               related_object_serializer = JSONAPI::Serializer.find_serializer(obj, attr_data[:options])
               data[formatted_attribute_name]['data'] << {
                 'type' => related_object_serializer.type.to_s,
-                'id' => related_object_serializer.id.to_s,
+                'id' => related_object_serializer.id.to_s
               }
             end
           end
@@ -337,7 +337,7 @@ module JSONAPI
         primary_data = serialize_primary(objects, passthrough_options)
       end
       result = {
-        'data' => primary_data,
+        'data' => primary_data
       }
       result['jsonapi'] = options[:jsonapi] if options[:jsonapi]
       result['meta'] = options[:meta] if options[:meta]
@@ -375,9 +375,9 @@ module JSONAPI
 
     def self.serialize_errors(raw_errors)
       if is_activemodel_errors?(raw_errors)
-        {'errors' => activemodel_errors(raw_errors)}
+        { 'errors' => activemodel_errors(raw_errors) }
       else
-        {'errors' => raw_errors}
+        { 'errors' => raw_errors }
       end
     end
 
@@ -410,7 +410,7 @@ module JSONAPI
 
       serializer = serializer_class.new(object, options)
       data = {
-        'type' => serializer.type.to_s,
+        'type' => serializer.type.to_s
       }
 
       # "The id member is not required when the resource object originates at the client
@@ -466,11 +466,11 @@ module JSONAPI
         object = nil
         is_collection = false
         is_valid_attr = false
-        if serializer.has_one_relationships.has_key?(unformatted_attr_name)
+        if serializer.has_one_relationships.key?(unformatted_attr_name)
           is_valid_attr = true
           attr_data = serializer.has_one_relationships[unformatted_attr_name]
           object = serializer.has_one_relationship(unformatted_attr_name, attr_data)
-        elsif serializer.has_many_relationships.has_key?(unformatted_attr_name)
+        elsif serializer.has_many_relationships.key?(unformatted_attr_name)
           is_valid_attr = true
           is_collection = true
           attr_data = serializer.has_many_relationships[unformatted_attr_name]
@@ -527,7 +527,7 @@ module JSONAPI
             # so merge the include_linkages each time we see it to load all the relevant linkages.
             current_child_includes += results[key] && results[key][:include_linkages] || []
             current_child_includes.uniq!
-            results[key] = {object: obj, include_linkages: current_child_includes, options: attr_data[:options]}
+            results[key] = { object: obj, include_linkages: current_child_includes, options: attr_data[:options] }
           end
         end
 
@@ -563,7 +563,7 @@ module JSONAPI
     def self.merge_relationship_path(path, data)
       parts = path.split('.', 2)
       current_level = parts[0].strip
-      data[current_level] ||= {_include: true}
+      data[current_level] ||= { _include: true }
 
       if parts.length == 2
         # Need to recurse more.

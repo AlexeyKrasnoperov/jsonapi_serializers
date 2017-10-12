@@ -9,7 +9,7 @@ module JSONAPI
           [:attributes_map, :to_one_associations, :to_many_associations]
             .each do |k|
               key = "@#{k}"
-              attr = self.instance_variable_get(key)
+              attr = instance_variable_get(key)
               target.instance_variable_set(key, attr.dup) if attr
             end
         end
@@ -46,7 +46,7 @@ module JSONAPI
         @attributes_map ||= {}
         @attributes_map[name] = {
           attr_or_block: block_given? ? block : name,
-          options: options,
+          options: options
         }
       end
       private :add_attribute
@@ -57,7 +57,7 @@ module JSONAPI
         @to_one_associations ||= {}
         @to_one_associations[name] = {
           attr_or_block: block_given? ? block : name,
-          options: options,
+          options: options
         }
       end
       private :add_to_one_association
@@ -68,7 +68,7 @@ module JSONAPI
         @to_many_associations ||= {}
         @to_many_associations[name] = {
           attr_or_block: block_given? ? block : name,
-          options: options,
+          options: options
         }
       end
       private :add_to_many_association

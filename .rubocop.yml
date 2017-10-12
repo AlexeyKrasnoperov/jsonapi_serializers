@@ -6,19 +6,8 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 179
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
 Metrics/LineLength:
-  Max: 133
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: runtime_error, standard_error
-Lint/InheritException:
-  Exclude:
-    - 'lib/jsonapi-serializers.rb'
+  Max: 172
 
 # Offense count: 6
 Lint/ParenthesesAsGroupedExpression:
@@ -93,15 +82,7 @@ Style/EmptyMethod:
     - 'lib/jsonapi-serializers/serializer.rb'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Style/ExtraSpacing:
-  Exclude:
-    - 'spec/support/serializers.rb'
-
-# Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
 Style/FileName:
   Exclude:
     - 'lib/jsonapi-serializers.rb'
@@ -118,14 +99,6 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Exclude:
     - 'lib/jsonapi-serializers/serializer.rb'
-
-# Offense count: 136
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_braces
-Style/IndentHash:
-  Exclude:
-    - 'spec/serializer_spec.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -155,13 +128,6 @@ Style/Next:
   Exclude:
     - 'lib/jsonapi-serializers/serializer.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Exclude:
-    - 'jsonapi-serializers.gemspec'
-
 # Offense count: 7
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
 # NamePrefix: is_, has_, have_
@@ -173,115 +139,9 @@ Style/PredicateName:
     - 'lib/jsonapi-serializers/attributes.rb'
     - 'lib/jsonapi-serializers/serializer.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: short, verbose
-Style/PreferredHashMethods:
-  Exclude:
-    - 'lib/jsonapi-serializers/serializer.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
 # SupportedStyles: compact, exploded
 Style/RaiseArgs:
   EnforcedStyle: compact
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/jsonapi-serializers/attributes.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: space, no_space
-Style/SpaceBeforeBlockBraces:
-  Exclude:
-    - 'lib/jsonapi-serializers/attributes.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SupportedStylesForEmptyBraces, SpaceBeforeBlockParameters.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Style/SpaceInsideBlockBraces:
-  Exclude:
-    - 'lib/jsonapi-serializers/attributes.rb'
-    - 'spec/support/factory.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/SpaceInsideBrackets:
-  Exclude:
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 187
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SupportedStylesForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Style/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'lib/jsonapi-serializers/serializer.rb'
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 36
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'Rakefile'
-    - 'jsonapi-serializers.gemspec'
-    - 'lib/jsonapi-serializers.rb'
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Style/TrailingBlankLines:
-  Exclude:
-    - 'Rakefile'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStylesForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArguments:
-  Exclude:
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 151
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStylesForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInLiteral:
-  Exclude:
-    - 'lib/jsonapi-serializers/attributes.rb'
-    - 'lib/jsonapi-serializers/serializer.rb'
-    - 'spec/serializer_spec.rb'
-    - 'spec/support/serializers.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/UnneededPercentQ:
-  Exclude:
-    - 'jsonapi-serializers.gemspec'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles, MinSize, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  EnforcedStyle: brackets

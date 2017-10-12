@@ -101,13 +101,13 @@ module MyApp
     end
 
     def type
-      'posts'  # Intentionally test string type.
+      'posts' # Intentionally test string type.
     end
 
     def meta
       {
         'copyright' => 'Copyright 2015 Example Corp.',
-        'authors' => ['Aliens'],
+        'authors' => ['Aliens']
       }
     end
   end
