@@ -254,12 +254,12 @@ module JSONAPI
 
     def self.serialize(objects, options = {})
       # Normalize option strings to symbols.
-      options[:is_collection] = options.delete('is_collection') || options[:is_collection] || false
+      options[:is_collection] = options.delete('is_collection') || options[:is_collection]
       options[:include] = options.delete('include') || options[:include]
       options[:serializer] = options.delete('serializer') || options[:serializer]
       options[:namespace] = options.delete('namespace') || options[:namespace]
       options[:context] = options.delete('context') || options[:context] || {}
-      options[:skip_collection_check] = options.delete('skip_collection_check') || options[:skip_collection_check] || false
+      options[:skip_collection_check] = options.delete('skip_collection_check') || options[:skip_collection_check]
       options[:base_url] = options.delete('base_url') || options[:base_url]
       options[:jsonapi] = options.delete('jsonapi') || options[:jsonapi]
       options[:meta] = options.delete('meta') || options[:meta]
@@ -323,7 +323,8 @@ module JSONAPI
         # We always must be told if serializing a collection because the JSON:API spec distinguishes
         # how to serialize null single resources vs. empty collections.
         if !options[:skip_collection_check] && objects.respond_to?(:each)
-          raise JSONAPI::Serializer::AmbiguousCollectionError, 'Must provide `is_collection: true` to `serialize` when serializing collections.'
+          raise JSONAPI::Serializer::AmbiguousCollectionError,
+                'Must provide `is_collection: true` to `serialize` when serializing collections.'
         end
         # Have single object.
         primary_data = serialize_primary(objects, passthrough_options)
@@ -476,7 +477,8 @@ module JSONAPI
         if attribute_name != serializer.format_name(attribute_name)
           expected_name = serializer.format_name(attribute_name)
 
-          raise JSONAPI::Serializer::InvalidIncludeError, "'#{attribute_name}' is not a valid include.  Did you mean '#{expected_name}' ?"
+          raise JSONAPI::Serializer::InvalidIncludeError,
+                "'#{attribute_name}' is not a valid include.  Did you mean '#{expected_name}' ?"
         end
 
         # We're finding relationships for compound documents, so skip anything that doesn't exist.
@@ -553,10 +555,9 @@ module JSONAPI
       current_level = parts[0].strip
       data[current_level] ||= { _include: true }
 
-      if parts.length == 2
-        # Need to recurse more.
-        merge_relationship_path(parts[1], data[current_level])
-      end
+      return unless parts.length == 2
+      # Need to recurse more.
+      merge_relationship_path(parts[1], data[current_level])
     end
     class << self; protected :merge_relationship_path; end
   end
