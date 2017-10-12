@@ -127,8 +127,8 @@ module JSONAPI
           else
             related_object_serializer = JSONAPI::Serializer.find_serializer(object, attr_data[:options])
             data[formatted_attribute_name]['data'] = {
-              'type' => related_object_serializer.type.to_s,
-              'id' => related_object_serializer.id.to_s
+              'id' => related_object_serializer.id.to_s,
+              'type' => related_object_serializer.type.to_s
             }
           end
         end
@@ -495,7 +495,7 @@ module JSONAPI
             # Spec: A compound document MUST NOT include more than one resource object for each
             # type and id pair.
             # http://jsonapi.org/format/#document-structure-compound-documents
-            key = [obj_serializer.type, obj_serializer.id]
+            key = [obj_serializer.id, obj_serializer.type]
 
             # This is special: we know at this level if a child of this parent will also been
             # included in the compound document, so we can compute exactly what linkages should
