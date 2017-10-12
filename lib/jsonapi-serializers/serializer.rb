@@ -157,8 +157,8 @@ module JSONAPI
           objects.each do |obj|
             related_object_serializer = JSONAPI::Serializer.find_serializer(obj, attr_data[:options])
             data[formatted_attribute_name]['data'] << {
-              'type' => related_object_serializer.type.to_s,
-              'id' => related_object_serializer.id.to_s
+              'id' => related_object_serializer.id.to_s,
+              'type' => related_object_serializer.type.to_s
             }
           end
         end
