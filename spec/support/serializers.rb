@@ -165,7 +165,6 @@ module MyApp
     end
   end
 
-
   class PostSerializerWithoutLinks
     include JSONAPI::Serializer
 
@@ -181,11 +180,11 @@ module MyApp
       nil
     end
 
-    def relationship_self_link(attribute_name)
+    def relationship_self_link(_attribute_name)
       nil
     end
 
-    def relationship_related_link(attribute_name)
+    def relationship_related_link(_attribute_name)
       nil
     end
   end
