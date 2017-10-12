@@ -190,20 +190,22 @@ module MyApp
     end
   end
 
-  class PostSerializerWithBaseUrl
+  class PostSerializerWithoutBaseUrl
     include JSONAPI::Serializer
-
-    def base_url
-      'http://example.com'
-    end
 
     attribute :title
     attribute :long_content do
       object.body
     end
 
-    has_one :author
-    has_many :long_comments
+    has_one :author, include_links: true
+    has_many :long_comments, include_links: true
+  end
+
+  class PostSerializerWithBaseUrl < PostSerializerWithoutBaseUrl
+    def base_url
+      'http://example.com'
+    end
   end
 
   class EmptySerializer

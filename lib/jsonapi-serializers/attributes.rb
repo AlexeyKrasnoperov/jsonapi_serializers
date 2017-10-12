@@ -7,11 +7,11 @@ module JSONAPI
       target.class_eval do
         def self.inherited(target)
           [:attributes_map, :to_one_associations, :to_many_associations]
-            .each{|k|
+            .each do |k|
               key = "@#{k}"
               attr = self.instance_variable_get(key)
               target.instance_variable_set(key, attr.dup) if attr
-            }
+            end
         end
       end
     end
@@ -63,8 +63,8 @@ module JSONAPI
       private :add_to_one_association
 
       def add_to_many_association(name, options = {}, &block)
-        options[:include_links] = options.fetch(:include_links, true)
-        options[:include_data] = options.fetch(:include_data, false)
+        options[:include_links] = options.fetch(:include_links, false)
+        options[:include_data] = options.fetch(:include_data, true)
         @to_many_associations ||= {}
         @to_many_associations[name] = {
           attr_or_block: block_given? ? block : name,
