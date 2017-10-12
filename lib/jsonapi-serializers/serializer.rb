@@ -376,7 +376,7 @@ module JSONAPI
 
     def self.activemodel_errors(raw_errors)
       raw_errors.to_hash(full_messages: true).inject([]) do |result, (attribute, messages)|
-        result += messages.map { |message| single_error(attribute.to_s, message) }
+        result + messages.map { |message| single_error(attribute.to_s, message) }
       end
     end
 
@@ -457,7 +457,6 @@ module JSONAPI
         # We know the name of this relationship, but we don't know where it is stored internally.
         # Check if it is a has_one or has_many relationship.
         object = nil
-        is_collection = false
         is_valid_attr = false
         if serializer.has_one_relationships.key?(unformatted_attr_name)
           is_valid_attr = true
@@ -465,7 +464,6 @@ module JSONAPI
           object = serializer.has_one_relationship(unformatted_attr_name, attr_data)
         elsif serializer.has_many_relationships.key?(unformatted_attr_name)
           is_valid_attr = true
-          is_collection = true
           attr_data = serializer.has_many_relationships[unformatted_attr_name]
           object = serializer.has_many_relationship(unformatted_attr_name, attr_data)
         end

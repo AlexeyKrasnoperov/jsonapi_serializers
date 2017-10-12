@@ -8,42 +8,32 @@ Style/Documentation:
     - 'lib/jsonapi-serializers/attributes.rb'
     - 'lib/jsonapi-serializers/serializer.rb'
 
-# Offense count: 6
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'spec/serializer_spec.rb'
-
-# Offense count: 3
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/jsonapi-serializers/serializer.rb'
-
 # Offense count: 5
 Metrics/AbcSize:
-  Max: 102
+  Max: 100
 
 # Offense count: 30
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/BlockLength:
-  Max: 1137
+  Max: 945
 
 # Offense count: 4
 Metrics/CyclomaticComplexity:
-  Max: 37
+  Max: 35
 
 # Offense count: 5
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
-  Max: 77
+  Max: 74
 
 # Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/ModuleLength:
-  Max: 225
+  Max: 215
 
 # Offense count: 4
 Metrics/PerceivedComplexity:
-  Max: 38
+  Max: 36
 
 # Offense count: 3
 Style/ClassVars:

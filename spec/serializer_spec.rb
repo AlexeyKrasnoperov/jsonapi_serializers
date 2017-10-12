@@ -731,7 +731,7 @@ describe JSONAPI::Serializer do
         post = create(:post, :with_author, long_comments: long_comments)
 
         serialized_data = JSONAPI::Serializer.serialize(post, fields: { posts: :title })
-        expect(serialized_data).to eq ({
+        expect(serialized_data).to eq(
           'data' => {
             'type' => 'posts',
             'id' => post.id.to_s,
@@ -742,7 +742,7 @@ describe JSONAPI::Serializer do
               'self' => '/posts/1'
             }
           }
-        })
+        )
       end
       it 'allows to limit fields(relationships) for serialized resource' do
         first_user = create(:user)
@@ -754,14 +754,14 @@ describe JSONAPI::Serializer do
 
         fields = { posts: 'title,author,long-comments' }
         serialized_data = JSONAPI::Serializer.serialize(post, fields: fields)
-        expect(serialized_data['data']['relationships']).to eq ({
+        expect(serialized_data['data']['relationships']).to eq(
           'author' => {
             'data' => { 'type' => 'users', 'id' => '3' }
           },
           'long-comments' => {
             'data' => [{ 'type' => 'long-comments', 'id' => '1' }, { 'type' => 'long-comments', 'id' => '2' }]
           }
-        })
+        )
       end
       it 'allows also to pass specific fields as array instead of comma-separates values' do
         first_user = create(:user)
@@ -772,14 +772,12 @@ describe JSONAPI::Serializer do
         post = create(:post, :with_author, long_comments: long_comments)
 
         serialized_data = JSONAPI::Serializer.serialize(post, fields: { posts: %w(title author) })
-        expect(serialized_data['data']['attributes']).to eq ({
-          'title' => post.title
-        })
-        expect(serialized_data['data']['relationships']).to eq ({
+        expect(serialized_data['data']['attributes']).to eq('title' => post.title)
+        expect(serialized_data['data']['relationships']).to eq(
           'author' => {
             'data' => { 'type' => 'users', 'id' => '3' }
           }
-        })
+        )
       end
       it 'allows to limit fields(attributes and relationships) for included resources' do
         first_user = create(:user)
@@ -795,7 +793,7 @@ describe JSONAPI::Serializer do
 
         fields = { posts: 'title,author', users: '' }
         serialized_data = JSONAPI::Serializer.serialize(post, fields: fields, include: 'author')
-        expect(serialized_data).to eq ({
+        expect(serialized_data).to eq(
           'data' => expected_primary_data,
           'included' => [
             serialize_primary(
@@ -804,16 +802,16 @@ describe JSONAPI::Serializer do
               fields: { 'users' => [] }
             )
           ]
-        })
+        )
 
         fields = { posts: 'title,author' }
         serialized_data = JSONAPI::Serializer.serialize(post, fields: fields, include: 'author')
-        expect(serialized_data).to eq ({
+        expect(serialized_data).to eq(
           'data' => expected_primary_data,
           'included' => [
             serialize_primary(post.author, serializer: MyAppOtherNamespace::UserSerializer)
           ]
-        })
+        )
       end
     end
   end
