@@ -61,7 +61,7 @@ module JSONAPI
       # http://jsonapi.org/recommendations/#naming
       def format_name(attribute_name)
         attr_name = attribute_name.to_s
-        @@formatted_attribute_names[attr_name] ||= attr_name.dasherize.freeze
+        @@formatted_attribute_names[attr_name] ||= attr_name.underscore.freeze
       end
 
       # The opposite of format_name. Override this if you override format_name.
