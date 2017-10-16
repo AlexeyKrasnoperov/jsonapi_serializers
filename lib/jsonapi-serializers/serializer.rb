@@ -209,7 +209,15 @@ module JSONAPI
           # Skip the sentinal value, but we need to preserve it for siblings.
           next if attribute_name == :_include
 
-          serializer = JSONAPI::Serializer.find_serializer(root_object, options)
+          specific_serializer_options = results.find do |k, _v|
+            k.first == root_object.id.to_s &&
+              k.last == root_object.class.name.split('::').last.underscore.dasherize.pluralize
+          end
+          specific_serializer_options = specific_serializer_options.last[:options] if specific_serializer_options
+
+          specified_serializer = specific_serializer_options[:serializer] if specific_serializer_options
+          options_to_be_passed = specified_serializer ? options.merge(serializer: specified_serializer) : options
+          serializer = JSONAPI::Serializer.find_serializer(root_object, options_to_be_passed)
           unformatted_attr_name = serializer.unformat_name(attribute_name).to_sym
 
           # We know the name of this relationship, but we don't know where it is stored internally.

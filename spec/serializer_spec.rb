@@ -1031,7 +1031,7 @@ describe JSONAPI::Serializer do
         ]
       }
 
-      includes = ['author', 'long-comments']
+      includes = ['author', 'long-comments', 'long-comments.user']
 
       actual_data = JSONAPI::Serializer.serialize(post, include: includes, serializer: MyApp::FancyPostSerializer)
 

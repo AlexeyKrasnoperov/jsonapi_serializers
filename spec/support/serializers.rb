@@ -250,7 +250,7 @@ module MyApp
       "Fancy #{object.body}"
     end
 
-    has_one :user
+    has_one :user, serializer: MyApp::FancyAuthorSerializer
   end
 end
 
