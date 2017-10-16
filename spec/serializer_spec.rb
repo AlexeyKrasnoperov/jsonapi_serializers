@@ -455,25 +455,6 @@ describe JSONAPI::Serializer do
         .to eq('links' => links,
                'data' => serialize_primary(post, serializer: MyApp::PostSerializer))
     end
-    # TODO: remove this code on next major release
-    it 'can include a top level errors node - deprecated' do
-      post = create(:post)
-      errors = [
-        {
-          'source' => { 'pointer' => '/data/attributes/first-name' },
-          'title' => 'Invalid Attribute',
-          'detail' => 'First name must contain at least three characters.'
-        },
-        {
-          'source' => { 'pointer' => '/data/attributes/first-name' },
-          'title' => 'Invalid Attribute',
-          'detail' => 'First name must contain an emoji.'
-        }
-      ]
-      expect(JSONAPI::Serializer.serialize(post, errors: errors))
-        .to eq('errors' => errors,
-               'data' => serialize_primary(post, serializer: MyApp::PostSerializer))
-    end
     it 'can serialize a single object with an `each` method by passing skip_collection_check: true' do
       post = create(:post)
       post.define_singleton_method(:each) do

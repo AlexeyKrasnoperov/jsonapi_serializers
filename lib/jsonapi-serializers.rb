@@ -1,6 +1,8 @@
 require 'jsonapi-serializers/version'
 require 'jsonapi-serializers/attributes'
 require 'jsonapi-serializers/serializer'
+require 'jsonapi-serializers/serializer/class_methods'
+require 'jsonapi-serializers/serializer/instance_methods'
 
 module JSONAPI
   module Serializer

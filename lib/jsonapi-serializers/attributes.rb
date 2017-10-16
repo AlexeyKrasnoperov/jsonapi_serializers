@@ -6,12 +6,11 @@ module JSONAPI
 
       target.class_eval do
         def self.inherited(target)
-          [:attributes_map, :to_one_associations, :to_many_associations]
-            .each do |k|
-              key = "@#{k}"
-              attr = instance_variable_get(key)
-              target.instance_variable_set(key, attr.dup) if attr
-            end
+          [:attributes_map, :to_one_associations, :to_many_associations].each do |k|
+            key = "@#{k}"
+            attr = instance_variable_get(key)
+            target.instance_variable_set(key, attr.dup) if attr
+          end
         end
       end
     end

@@ -249,6 +249,8 @@ module MyApp
     attribute :fancy_body do
       "Fancy #{object.body}"
     end
+
+    has_one :user
   end
 end
 
