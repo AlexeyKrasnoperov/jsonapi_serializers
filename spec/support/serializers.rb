@@ -21,20 +21,11 @@ module MyApp
     attr_accessor :body
     attr_accessor :user
     attr_accessor :post
-
-    # Just a copy of the default implementation, we need this to exist to be able to stub in tests.
-    def jsonapi_serializer_class_name
-      'MyApp::LongCommentSerializer'
-    end
   end
 
   class User
     attr_accessor :id
     attr_accessor :name
-
-    def jsonapi_serializer_class_name
-      'MyAppOtherNamespace::UserSerializer'
-    end
   end
 
   class UnderscoreTest
@@ -138,18 +129,6 @@ module MyApp
     end
   end
 
-  class PostSerializerWithContext < PostSerializer
-    attribute :body, if: :show_body?, unless: :hide_body?
-
-    def show_body?
-      context.fetch(:show_body, true)
-    end
-
-    def hide_body?
-      context.fetch(:hide_body, false)
-    end
-  end
-
   class LongCommentsSerializerWithContext
     include JSONAPI::Serializer
 
@@ -162,6 +141,21 @@ module MyApp
 
     def show_comments_user?
       context.fetch(:show_comments_user, true)
+    end
+  end
+
+
+  class PostSerializerWithContext < PostSerializer
+    attribute :body, if: :show_body?, unless: :hide_body?
+
+    has_many :long_comments, serializer: LongCommentsSerializerWithContext
+
+    def show_body?
+      context.fetch(:show_body, true)
+    end
+
+    def hide_body?
+      context.fetch(:hide_body, false)
     end
   end
 
@@ -252,10 +246,14 @@ module MyApp
 
     has_one :user, serializer: MyApp::FancyAuthorSerializer
   end
+
+  class UserSerializer
+    include JSONAPI::Serializer
+
+    attribute :name
+  end
 end
 
-# Test the `jsonapi_serializer_class_name` override method for serializers in different namespaces.
-# There is no explicit test for this, just implicit tests that correctly serialize User objects.
 module MyAppOtherNamespace
   class UserSerializer
     include JSONAPI::Serializer
