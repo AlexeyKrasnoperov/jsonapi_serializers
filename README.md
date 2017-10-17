@@ -395,20 +395,6 @@ You can pass a `jsonapi` argument to specify a [top-level "jsonapi" key](http://
 JSONAPI::Serializer.serialize(post, jsonapi: {version: '1.0'})
 ```
 
-### Explicit serializer discovery
-
-By default, jsonapi-serializers assumes that the serializer class for `Namespace::User` is `Namespace::UserSerializer`. You can override this behavior on a per-object basis by implementing the `jsonapi_serializer_class_name` method.
-
-```ruby
-class User
-  def jsonapi_serializer_class_name
-    'SomeOtherNamespace::CustomUserSerializer'
-  end
-end
-```
-
-Now, when a `User` object is serialized, it will use the `SomeOtherNamespace::CustomUserSerializer`.
-
 ### Namespace serializers
 
 Assume you have an API with multiple versions:
@@ -436,8 +422,6 @@ With the namespace option you can choose which serializer is used.
 JSONAPI::Serializer.serialize(post, namespace: Api::V1)
 JSONAPI::Serializer.serialize(post, namespace: Api::V2)
 ```
-
-This option overrides the `jsonapi_serializer_class_name` method.
 
 ### Sparse fieldsets
 

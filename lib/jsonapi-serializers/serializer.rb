@@ -134,8 +134,6 @@ module JSONAPI
                        options[:serializer].to_s
                      elsif options[:namespace]
                        "#{options[:namespace]}::#{object.class.name}Serializer"
-                     elsif object.respond_to?(:jsonapi_serializer_class_name)
-                       object.jsonapi_serializer_class_name.to_s
                      else
                        "#{object.class.name}Serializer"
                      end
