@@ -10,6 +10,7 @@ This library is up-to-date with the finalized v1 JSON API spec.
 * [Features](#features)
 * [Installation](#installation)
 * [Usage](#usage)
+  * [Configuration](#configuration)
   * [Define a serializer](#define-a-serializer)
   * [Serialize an object](#serialize-an-object)
   * [Serialize a collection](#serialize-a-collection)
@@ -55,6 +56,27 @@ gem 'jsonapi-serializers'
 Or install directly with `gem install jsonapi-serializers`.
 
 ## Usage
+
+### Configuration
+
+The following configuration options can be set on
+`JSONAPI::Serializer.config`, preferably inside an initializer.
+
+#### key_transform
+
+
+| Option | Result |
+|----|----|
+| `:camel` | ExampleKey |
+| `:camel_lower` | exampleKey |
+| `:dash` | example-key (default) |
+| `:unaltered` | the original, unaltered key |
+| `:underscore` | example_key |
+| `nil` | use the default (`:dash`) transformation |
+
+```ruby
+JSONAPI::Serializer.config.key_transform = :unaltered
+```
 
 ### Define a serializer
 

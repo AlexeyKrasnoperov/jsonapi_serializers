@@ -101,13 +101,13 @@ module MyApp
     end
 
     def type
-      'posts'  # Intentionally test string type.
+      'posts' # Intentionally test string type.
     end
 
     def meta
       {
         'copyright' => 'Copyright 2015 Example Corp.',
-        'authors' => ['Aliens'],
+        'authors' => ['Aliens']
       }
     end
   end
@@ -165,7 +165,6 @@ module MyApp
     end
   end
 
-
   class PostSerializerWithoutLinks
     include JSONAPI::Serializer
 
@@ -181,29 +180,31 @@ module MyApp
       nil
     end
 
-    def relationship_self_link(attribute_name)
+    def relationship_self_link(_attribute_name)
       nil
     end
 
-    def relationship_related_link(attribute_name)
+    def relationship_related_link(_attribute_name)
       nil
     end
   end
 
-  class PostSerializerWithBaseUrl
+  class PostSerializerWithoutBaseUrl
     include JSONAPI::Serializer
-
-    def base_url
-      'http://example.com'
-    end
 
     attribute :title
     attribute :long_content do
       object.body
     end
 
-    has_one :author
-    has_many :long_comments
+    has_one :author, include_links: true
+    has_many :long_comments, include_links: true
+  end
+
+  class PostSerializerWithBaseUrl < PostSerializerWithoutBaseUrl
+    def base_url
+      'http://example.com'
+    end
   end
 
   class EmptySerializer
@@ -219,6 +220,37 @@ module MyApp
   class PostSerializerWithInheritedProperties < PostSerializer
     # Add only :tag, inherit the rest.
     attribute :tag
+  end
+
+  class FancyAuthorSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    attribute :fancy_name do
+      "Fancy #{object.name}"
+    end
+  end
+
+  class FancyPostSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    has_one :author, serializer: MyApp::FancyAuthorSerializer
+    has_many :long_comments, serializer: 'MyApp::FancyLongCommentSerializer'
+  end
+
+  class FancyLongCommentSerializer
+    include JSONAPI::Serializer
+
+    attribute :id
+
+    attribute :fancy_body do
+      "Fancy #{object.body}"
+    end
+
+    has_one :user, serializer: MyApp::FancyAuthorSerializer
   end
 end
 
@@ -257,7 +289,7 @@ module Api
         has_one :user
 
         # Circular-reference back to post.
-        has_one :post
+        has_one :post, namespace: 'Api::V1'
       end
     end
   end
