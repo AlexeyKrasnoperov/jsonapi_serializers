@@ -1,8 +1,11 @@
 require 'set'
 require 'active_support/inflector'
+require 'active_support/configurable'
+require 'case_transform'
 
 module JSONAPI
   module Serializer
+    include ActiveSupport::Configurable
     def self.included(target)
       target.extend(ClassMethods)
       target.class_eval do
@@ -115,6 +118,10 @@ module JSONAPI
         klass.new(object, options)
       end
 
+      def transform_key_casing(value)
+        CaseTransform.send(JSONAPI::Serializer.config.key_transform || :dash, value)
+      end
+
       private
 
       def normalize(possible_string)
@@ -148,7 +155,7 @@ module JSONAPI
       def single_error(attribute, message)
         {
           'source' => {
-            'pointer' => "/data/attributes/#{attribute.dasherize}"
+            'pointer' => "/data/attributes/#{transform_key_casing(attribute)}"
           },
           'detail' => message
         }
@@ -211,7 +218,7 @@ module JSONAPI
 
           specific_serializer_options = results.find do |k, _v|
             k.first == root_object.id.to_s &&
-              k.last == root_object.class.name.split('::').last.underscore.dasherize.pluralize
+              k.last == transform_key_casing(root_object.class.name.split('::').last.underscore).pluralize
           end
           specific_serializer_options = specific_serializer_options.last[:options] if specific_serializer_options
 

@@ -34,7 +34,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 3
 Style/ClassVars:
   Exclude:
-    - 'lib/jsonapi-serializers/serializer.rb'
+    - 'lib/jsonapi-serializers/serializer/instance_methods.rb'
 
 # Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
@@ -52,3 +52,4 @@ Style/PredicateName:
     - 'spec/**/*'
     - 'lib/jsonapi-serializers/attributes.rb'
     - 'lib/jsonapi-serializers/serializer.rb'
+    - 'lib/jsonapi-serializers/serializer/instance_methods.rb'

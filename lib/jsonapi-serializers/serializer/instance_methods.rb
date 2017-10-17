@@ -1,8 +1,6 @@
 module JSONAPI
   module Serializer
     module InstanceMethods
-      @@class_names = {}
-      @@formatted_attribute_names = {}
       @@unformatted_attribute_names = {}
 
       attr_accessor :object
@@ -32,7 +30,7 @@ module JSONAPI
       # For example, 'MyApp::LongCommment' will become the 'long-comments' type.
       def type
         class_name = object.class.name
-        @@class_names[class_name] ||= class_name.demodulize.tableize.dasherize.freeze
+        JSONAPI::Serializer.transform_key_casing(class_name.demodulize.tableize).freeze
       end
 
       # Override this to customize how attribute names are formatted.
@@ -40,7 +38,7 @@ module JSONAPI
       # http://jsonapi.org/recommendations/#naming
       def format_name(attribute_name)
         attr_name = attribute_name.to_s
-        @@formatted_attribute_names[attr_name] ||= attr_name.dasherize.freeze
+        JSONAPI::Serializer.transform_key_casing(attr_name).freeze
       end
 
       # The opposite of format_name. Override this if you override format_name.
