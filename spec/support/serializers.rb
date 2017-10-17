@@ -144,7 +144,6 @@ module MyApp
     end
   end
 
-
   class PostSerializerWithContext < PostSerializer
     attribute :body, if: :show_body?, unless: :hide_body?
 

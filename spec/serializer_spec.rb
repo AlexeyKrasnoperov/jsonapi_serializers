@@ -900,7 +900,8 @@ describe JSONAPI::Serializer do
         ]
       }
       includes = ['long-comments']
-      actual_data = JSONAPI::Serializer.serialize(post, context: context, include: includes, serializer: MyApp::PostSerializerWithContext)
+      actual_data = JSONAPI::Serializer.serialize(post, context: context, include: includes,
+                                                        serializer: MyApp::PostSerializerWithContext)
       expect(actual_data).to eq(expected_data)
     end
   end
